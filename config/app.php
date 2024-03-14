@@ -74,6 +74,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Extra Env Variables
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify your custom env variables for your application, which
+    | will be used in you application.
+    |
+    */
+
+    'admin_user_email' => env('ADMIN_USER_EMAIL', 'admin@temp.com'),
+
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
     |
@@ -167,6 +181,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\Filament\AdminPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
 
