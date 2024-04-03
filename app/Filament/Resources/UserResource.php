@@ -3,11 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
-use Filament\Actions\DeleteAction;
-use Filament\Forms;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,7 +12,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -39,10 +34,10 @@ class UserResource extends Resource
         return $table
             ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('id', '!=', auth()->id()))
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('email'),
-                TextColumn::make('email_verified_at'),
-                TextColumn::make('created_at')
+                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('email')->sortable()->searchable(),
+                TextColumn::make('email_verified_at')->sortable(),
+                TextColumn::make('created_at')->sortable()
             ])
             ->filters([
                 Filter::make('email_verified_at')->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at'))
