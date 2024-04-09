@@ -2,16 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Split;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\UserResource\Pages;
 
 class UserResource extends Resource
 {
@@ -23,9 +28,22 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('email')->email()->required()->unique(),
-                TextInput::make('password')->password()->required()->hiddenOn('edit'),
+                Fieldset::make('Label')->schema([
+                    Section::make([
+                        FileUpload::make('profile_picture')->required()->image()->imageEditor(),
+
+                    ]),
+                    Section::make([
+                        TextInput::make('name')->required(),
+                        TextInput::make('email')->email()->required()->unique(),
+                        TextInput::make('password')->password()->required()->hiddenOn('edit'),
+                    ]),
+                    Section::make([
+                        Toggle::make('is_admin')->label('Is Admin'),
+                        Toggle::make('is_active')->label('Active')->default(true)->required(),
+                    ]),
+                ])->columns(3),
+
             ]);
     }
 
